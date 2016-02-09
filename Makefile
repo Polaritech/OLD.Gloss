@@ -66,4 +66,9 @@ Build/Image/Boot.iso: Build/Binaries/BootISO9660.bin
 	@mv Build/Structure/ISO/BootISO9660.bin Build/Structure/ISO/boot/bootsect.bin
 	@xorriso -as mkisofs -R -J -c boot/bootcat.bin -b boot/bootsect.bin -no-emul-boot -boot-load-size 4 $(OUTPUT.file) Build/Structure/ISO
 
+# Main Command
 all: Build/Image/Boot.iso
+
+# Clean Command
+clean:
+	$(RM) Build
