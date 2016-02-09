@@ -25,8 +25,6 @@ Start:
     mov ah, 0x0e
     mov al, 'A'
     int 0x10
-    ;mov ax, 0x1f2b
-    ;mov [0xb8000], ax
 
     cli
     hlt
