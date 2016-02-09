@@ -1,11 +1,11 @@
 {
-    "folders":
-    [
-        {
-            "path": ".",
+	"folders":
+	[
+		{
+			"path": ".",
             "folder_exclude_patterns": [
                 "Build"
             ]
-        }
-    ]
+		}
+	]
 }

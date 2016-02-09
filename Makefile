@@ -49,7 +49,7 @@ Build/Objects/%.o: %.asm
 	@$(BUILD.o.asm) $(OUTPUT.file) $<
 
 # Define Specials
-OBJ := $(filter-out Build/Objects/BootISO9660.o, $(OBJ))
+OBJ := $(filter-out Build/Objects/BootISO9660.o,$(OBJ))
 Build/Binaries/BootISO9660.bin: Build/Objects/BootISO9660.o
 	@$(MKDIR) $(@D)
 	@cat $< > $@

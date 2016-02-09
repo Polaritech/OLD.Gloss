@@ -21,10 +21,8 @@ Start:
     mov ss, ax
     mov sp, 0x7c00
 
-    xor bx, bx
-    mov ah, 0x0e
-    mov al, 'A'
-    int 0x10
+    mov eax, 0xb8000
+    mov [eax], word 0x1f2b
 
     cli
     hlt
