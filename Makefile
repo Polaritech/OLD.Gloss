@@ -71,4 +71,8 @@ all: Build/Image/Boot.iso
 
 # Clean Command
 clean:
-	$(RM) Build
+	@$(RM) Build
+
+# Run Command
+run: all
+	@qemu-system-i386 -cdrom Build/Image/Boot.iso
