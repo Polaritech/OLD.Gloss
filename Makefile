@@ -38,8 +38,6 @@ OBJ_ASM := $(addprefix Build/Objects/,$(patsubst %.asm,%.o,$(shell find Source -
 SRC_INC := $(shell find Source -type f -name '*.inc')
 OBJ := $(OBJ_C) $(OBJ_CXX) $(OBJ_ASM)
 
-$(warning $(SRC_INC))
-
 # Default Rules
 Build/Objects/%.o: %.c
 	@$(MKDIR) $(@D)
@@ -52,11 +50,11 @@ Build/Objects/%.o: %.asm
 	@$(BUILD.o.asm) $(OUTPUT.file) $<
 
 # Define Specials
-OBJ := $(filter-out Build/Objects/BootISO9660.o,$(OBJ))
+OBJ := $(filter-out Build/Objects/Boot/BootISO9660.o,$(OBJ))
 
-Build/Objects/BootISO9660.o: $(SRC_INC)
+Build/Objects/Boot/BootISO9660.o: $(SRC_INC)
 
-Build/Binaries/BootISO9660.bin: Build/Objects/BootISO9660.o
+Build/Binaries/BootISO9660.bin: Build/Objects/Boot/BootISO9660.o
 	@$(MKDIR) $(@D)
 	@cat $< > $@
 #Build/Binaries/Common.bin: Build/Objects/Common.o

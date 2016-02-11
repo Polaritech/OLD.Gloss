@@ -14,11 +14,10 @@ BootTable:
 
 %include "AssemblyFunctions/IAPX86/A20/A20.inc"
 %include "AssemblyFunctions/IAPX86/CPU/CPU.inc"
+%include "AssemblyFunctions/IAPX86/Error/Error.inc"
 %include "AssemblyFunctions/IAPX86/IO/IO.inc"
+%include "Data/Data.inc"
 %include "Data/BSS.inc"
-
-[SECTION .TEXT]
-;%include "Data/Data.inc"
 
 [SECTION .TEXT]
 [CPU X64]
@@ -54,7 +53,8 @@ EnableGDT:
     ret
 
 Start:
-    xor bx, bx
+    ; We need to initialize our segment registers and the stack so that we
+    ; don't accidentally access the wrong data or code and triple fault.
     xor ax, ax
     mov ds, ax
     mov es, ax
@@ -63,16 +63,33 @@ Start:
     mov ss, ax
     mov sp, 0x7c00
 
-;    mov [DriveNumber], dl
+    ; Now we zero out the BSS section of our bootloader so that the bootloader
+    ; can store data and access it with a known initial state.
+;    pusha
+;    cld
+    mov cx, (BSS.End - BSS)
+    mov di, BSS
+    cld
+    rep stosb
+;    popa
 
-;    mov eax, 0xb8000
-;    mov [eax], word 0x3f3f
-
+    ; Next we initialize IO for the bootloader and clear the screen of any
+    ; initial input.
     call IAPX86.IO.Init
     call IAPX86.IO.Clear
 
-;    mov si, Data.Message.Hi
-;    call IAPX86.IO.Print.String
+    ; Now we print out the splash information, consisting of the title of the
+    ; project as well as version information and copyright information.
+    mov si, Data.Message.Init.Splash001
+    call IAPX86.IO.Print.String
+    mov si, Data.Message.Init.Splash002
+    call IAPX86.IO.Print.String
+    mov si, Data.Message.NewLine
+    call IAPX86.IO.Print.String
+    mov si, Data.Message.Init.Splash003
+    call IAPX86.IO.Print.String
+    mov si, Data.Message.Init.Splash004
+    call IAPX86.IO.Print.String
 
     call IAPX86.A20.Enable
     call IAPX86.CPU.Check.AMD64
