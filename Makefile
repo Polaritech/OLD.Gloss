@@ -35,7 +35,10 @@ vpath %.asm Source
 OBJ_C := $(addprefix Build/Objects/,$(patsubst %.c,%.o,$(shell find Source -type f -name '*.c' | sed 's/Source\///g')))
 OBJ_CXX := $(addprefix Build/Objects/,$(patsubst %.cpp,%.o,$(shell find Source -type f -name '*.cpp' | sed 's/Source\///g')))
 OBJ_ASM := $(addprefix Build/Objects/,$(patsubst %.asm,%.o,$(shell find Source -type f -name '*.asm' | sed 's/Source\///g')))
+SRC_INC := $(shell find Source -type f -name '*.inc')
 OBJ := $(OBJ_C) $(OBJ_CXX) $(OBJ_ASM)
+
+$(warning $(SRC_INC))
 
 # Default Rules
 Build/Objects/%.o: %.c
@@ -50,6 +53,9 @@ Build/Objects/%.o: %.asm
 
 # Define Specials
 OBJ := $(filter-out Build/Objects/BootISO9660.o,$(OBJ))
+
+Build/Objects/BootISO9660.o: $(SRC_INC)
+
 Build/Binaries/BootISO9660.bin: Build/Objects/BootISO9660.o
 	@$(MKDIR) $(@D)
 	@cat $< > $@
@@ -75,4 +81,4 @@ clean:
 
 # Run Command
 run: all
-	@qemu-system-i386 -cdrom Build/Image/Boot.iso
+	@qemu-system-x86_64 -cdrom Build/Image/Boot.iso
